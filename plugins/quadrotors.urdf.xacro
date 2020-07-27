@@ -1,0 +1,21 @@
+<robot name="quadrotors_test" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find autonomous_drone_test)/plugins/Odometry.urdf.xacro"/>
+    <xacro:include filename="$(find autonomous_drone_test)/plugins/controller.urdf.xacro"/>
+    <xacro:macro name="gazebo_quadrotor_plugins">
+        <canonicalBody>base_link</canonicalBody>
+        <quadrotor_sensors/>
+        <quadrotor_controller/>
+    </xacro:macro>
+
+
+
+    <xacro:include filename="$(find autonomous_drone_test)/plugins/initialization.urdf.xacro"/>
+    <xacro:quadrotors num="1">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:quadrotors>
+
+    
+    <gazebo_quadrotor_plugins/> 
+
+</robot>        

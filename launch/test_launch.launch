@@ -1,0 +1,30 @@
+<launch>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!--<arg name="world_name" value="$(find autonomous_drone_test)/world/(world file)/>-->
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="recording" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>    
+
+
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find autonomous_drone_test)/plugins/initialization.urdf.xacro'"/>
+
+    <node pkg="gazebo_ros" type="spawn_model" name="test_spawn" respawn="false" output="screen"
+        args="-urdf -model quadrotor_test -param robot_description"/>
+
+    <node pkg="message_to_tf" type="message_to_tf" name="ground_truth_to_tf" output="screen">
+        <param name="odometry_topic"   value="ground_truth/state"/>
+        <param name="frame_id"  value="nav"/>
+    </node>
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" >
+     <param name="publish_frequency" type="double" value="50.0" />
+     <param name="tf_prefix" type="string" value="" />
+    </node>
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find autonomous_drone_test)/rviz/drone.rviz"/>
+    
+</launch>    
